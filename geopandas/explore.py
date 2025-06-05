@@ -62,6 +62,8 @@ def _explore(
     popup_kwds={},
     legend_kwds={},
     map_kwds={},
+    search_label=None,
+    search_kwds={},
     **kwargs,
 ):
     """Interactive map based on GeoPandas and folium/leaflet.js
@@ -656,7 +658,7 @@ def _explore(
                 )
 
     # add dataframe to map
-    folium.GeoJson(
+    data_layer = folium.GeoJson(
         feature_collection,
         tooltip=tooltip,
         popup=popup,
@@ -665,6 +667,13 @@ def _explore(
         highlight_function=highlight_function,
         **kwargs,
     ).add_to(m)
+
+    if search_label:
+        try:
+            import folium.plugins
+            folium.plugins.Search(layer=data_layer, **search_kwds)
+        except ImportError:
+            raise ValueError("Tre folium.plugins is required for search")
 
     if legend:
         # NOTE: overlaps will be resolved in branca #88

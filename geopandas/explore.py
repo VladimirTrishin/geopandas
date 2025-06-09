@@ -671,7 +671,7 @@ def _explore(
     if search_label:
         try:
             import folium.plugins
-            folium.plugins.Search(layer=data_layer, **search_kwds).add_to(m)
+            folium.plugins.Search(layer=data_layer, search_label=search_label, **search_kwds).add_to(m)
         except ImportError:
             raise ValueError("Tre folium.plugins is required for search")
 
